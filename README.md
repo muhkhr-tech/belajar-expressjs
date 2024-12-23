@@ -4,11 +4,13 @@ Langkah-langkah:
 1. Masuk ke directory /db
 2. Jalankan command : docker build -t db:1.0.0 .
 3. Jalankan command : docker run -it --rm -p 3333:3306 db:1.0.0
+Note: jika port 3333 sudah digunakan maka ganti dengan port yang lain
 
 #### Menjalankan Express
 Langkah-langkah:
 1. Masuk ke directory /be
-2. Jalankan command : npm start
+2. Jalankan command : npm install
+3. Jalankan command : npm start
 
 #### Daftar Endpoints CRUD
 
