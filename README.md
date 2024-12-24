@@ -135,3 +135,50 @@ Response Body Success :
     "data": null
 }
 ```
+
+## Create Jadwal Dokter Harian API
+
+Endpoint : POST /schedules/:dokterId
+
+Request Body :
+
+```json
+{
+    "hari": "Senin",
+    "jam_mulai": "10:00",
+    "jam_berakhir": "14:00"
+}
+```
+
+Response Body Success :
+
+```json
+{
+    "status": "success",
+    "message": "Berhasil menambahkan jadwal dokter",
+    "data": null
+}
+```
+
+## Create Jadwal Dokter Tanggal API
+
+Endpoint : POST /schedules/:dokterId/generate
+
+Request Body :
+
+```json
+{
+    "tanggal_mulai": "2025-1-1",
+    "tanggal_berakhir": "2025-1-31"
+}
+```
+
+Response Body Success :
+
+```json
+{
+    "status": "success",
+    "message": "Berhasil mengenerate jadwal dokter",
+    "data": null
+}
+```
