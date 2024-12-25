@@ -1,5 +1,8 @@
 const { where } = require('sequelize')
 const Dokter = require('../model/dokter.model')
+const sequelize = require('../model/db')
+const JadwalDokterHari = require('../model/jadwal_dokter_hari.model')
+const JadwalDokterTanggal = require('../model/jadwal_dokter_tanggal.model')
 
 async function get(req, res) {
     const data = await Dokter.findAll()
@@ -48,16 +51,46 @@ async function edit(req, res) {
 }
 
 async function remove(req, res) {
-    const data = await Dokter.destroy(
-    {where: {
-        id: req.params.id
-    }})
+    const dokterId = req.params.id
 
-    res.json({
-        'status': 'success',
-        'message': `Berhasil menghapus data dokter`,
-        'data': null
-    })
+    const transaction = await sequelize.transaction()
+
+    try {
+        await Dokter.destroy({
+            where: {
+                id: dokterId
+            }, 
+            transaction
+        })
+
+        await JadwalDokterHari.destroy({
+            where: {
+                dokterId: dokterId
+            },
+            transaction
+        })
+
+        await JadwalDokterTanggal.destroy({
+            where: {
+                dokterId: dokterId
+            },
+            transaction
+        })
+
+        await transaction.commit()
+        res.json({
+            'status': 'success',
+            'message': `Berhasil menghapus data dokter`,
+            'data': null
+        })
+    } catch (error) {
+        await transaction.rollback()
+        res.status(500).json({
+            'status': 'failed',
+            'message': `Gagal menghapus data`,
+            'data': null
+        })
+    }
 }
 
 module.exports = {
