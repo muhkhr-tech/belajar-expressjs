@@ -52,18 +52,21 @@ async function create(req, res) {
 
 async function generate(req, res) {
     const { dokterId } = req.params
-    const dokter = await Dokter.findOne({where: {
-        id: dokterId
-    }})
+    const [dokter, jadwal] = await Promise.all([
+        Dokter.findOne({where: {
+            id: dokterId
+        }}),
+
+        JadwalDokterHari.findAll({
+            attributes: ['kode_hari']
+        }, {where: {
+            dokterId: dokterId
+        }})
+    ])
+    
 
     const tanggalMulai = new Date(req.body.tanggal_mulai)
     const tanggalBerakhir = new Date(req.body.tanggal_berakhir);
-
-    const jadwal = await JadwalDokterHari.findAll({
-        attributes: ['kode_hari']
-    }, {where: {
-        dokterId: 1
-    }})
 
     const hari = jadwal.map((kode) => kode.kode_hari)
   
